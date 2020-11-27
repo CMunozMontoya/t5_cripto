@@ -8,8 +8,6 @@ user_password = input("PASSWORD: ")
 server = "imap.gmail.com"
 port = 993
 
-num = 0
-
 cont_mail = 0
 cont_mail_limit = 3000
 
@@ -22,7 +20,8 @@ f = open("mails.txt","w")
 #conectar a servidor y acceder al inbox
 mail = imaplib.IMAP4_SSL(server,port)
 mail.login(user_mail, user_password)
-#sleeccionar inbox
+
+#sleeccionar inbox------
 mail.select("inbox")
 
 status, data = mail.search(None, 'ALL')
@@ -39,17 +38,8 @@ for i in mail_ids:
             mail_id = message['Message-ID']
             mail_reply = message['Reply-To']
             mail_date = message['Date']
-            if message.is_multipart():
-                mail_content = ''
-                for part in message.get_payload():
-                    if part.get_content_type() == 'text/plain':
-                        mail_content += part.get_payload()
-            else:
-                mail_content = message.get_payload()
 
             print(f'From: {mail_from}')
-            #print(f'Subject: {mail_subject}')
-            #print(f'Content: {mail_content}')
             print(f'ID: {mail_id}')
 
             if mail_reply == objetivo:
@@ -67,6 +57,7 @@ for i in mail_ids:
 print("\nRevisados ",cont_mail," mails\n")
 print("Se hayaron: ",cont_obj, "mail de ",objetivo)
 
+f.close()
 
 #revisar mails falsos
 f = open("mails.txt","r")
@@ -89,11 +80,7 @@ for line in Lines:
     msg_id = line[start:end]
   
     x = re.findall("[0-9]{13}\.[a-f0-9]{13}@Nodemailer|[0-9]{13}\.[a-f0-9]{12}@Nodemailer",msg_id)
-    if x:
-        print(msg_id, "<<")
-    else:
-        print(msg_id," FALSO")
-
-f.close()
+    if not x:
+        print(msg_id," <- FALSO")
 
 f.close()

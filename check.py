@@ -25,6 +25,8 @@ for line in Lines:
     x = re.findall("[0-9]{13}\.[a-f0-9]{13}@Nodemailer|[0-9]{13}\.[a-f0-9]{12}@Nodemailer",msg_id)
     if not x:
         print(msg_id," <- FALSO")
-
+    else:
+        print(msg_id, "<<")
+        
 f.close()
 
